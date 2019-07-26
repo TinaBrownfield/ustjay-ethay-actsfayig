@@ -16,10 +16,18 @@ def get_fact():
 
     return facts[0].getText()
 
+def get_pig_latin(fact):
+    payload = {'input_text': fact}
+    response = requests.post('https://hidden-journey-62459.herokuapp.com/piglatinize/', allow_redirects=False, data=payload)
+
+    return response.headers['Location']
 
 @app.route('/')
 def home():
-    return "FILL ME!"
+    fact = get_fact().strip()
+    body = get_pig_latin(fact)
+
+    return Response(response=body)
 
 
 if __name__ == "__main__":
